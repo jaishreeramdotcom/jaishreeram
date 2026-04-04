@@ -83,12 +83,17 @@ export default function App() {
 
   // Fetch initial count from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem('jai-shree-ram-count');
-    const initialCount = stored ? parseInt(stored) : 0;
-    setCount(initialCount);
-    setDisplayCount(initialCount);
-    setIsLoading(false);
+    getCount();
   }, []);
+  
+  async function getCount() {
+    const { data } = await supabase.from("counter").select("value").eq("id", 1).single();
+    setCount(data.value);
+    setDisplayCount(data.value);
+    setIsLoading(false);
+  }
+
+  // end
 
   const handleBlessingPress = async () => {
     if (isPressed) return;
@@ -112,9 +117,11 @@ export default function App() {
     }
 
     // Increment count
-    const newCount = count + 1;
-    setCount(newCount);
-    localStorage.setItem('jai-shree-ram-count', newCount.toString());
+    const { data } = await supabase.from("counter").select("value").eq("id", 1).single();
+    const newValue = data.value + 1;
+    
+    await supabase.from("counter").update({ value: newValue }).eq("id", 1);
+    setCount(newValue);
 
     setTimeout(() => setIsPressed(false), 400);
   };
