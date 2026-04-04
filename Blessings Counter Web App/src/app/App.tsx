@@ -1,3 +1,9 @@
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  'https://fmxdddibmlgtcqweczao.supabase.co',
+  'sb_publishable_JtcQhNL3JJdpdkksq-ZQzA_xBEEnmQL'
+)
 import { useState, useEffect, useRef } from 'react';
 import { Sparkles } from 'lucide-react';
 
